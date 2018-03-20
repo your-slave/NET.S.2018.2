@@ -25,18 +25,18 @@ namespace NET.S._2018.Karakouski._2
             if (j < 0 || j > 31)
                 throw new ArgumentException(nameof(j));
 
-            int count = i;
-            BitArray bitArrSource = new BitArray(new int[] { numberSource });
-            BitArray bitArrIn = new BitArray(new int[] { numberIn });
-            
-            for(int iterator=0; count <= j; iterator++, count++)
-            {
-                bitArrSource.Set(count, bitArrIn.Get(iterator));
-            }
+            int tempNumberin = numberIn;
+            int correction = 1;
 
-            int[] temp = new int[1];
-            bitArrSource.CopyTo(temp, 0);
-            return temp[0];
+            numberIn <<= 31 - j;
+
+            if ((tempNumberin > 0) == (numberIn < 0))///////for a reason yet unknown shifting with the same number greater than 31 right and then left resulting in number's sign change
+                correction = -1;
+
+            numberIn >>= 31 - i - j;
+            numberIn *= correction;
+            return (~numberIn & numberSource) | numberIn;
+
         }
 
         /// <summary>
