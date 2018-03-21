@@ -80,6 +80,12 @@ namespace NET.S._2018.Karakouski.NUnit.Tests
             return DataManipulator.FindNextBiggerNumber(number);
         }
 
+        [TestCase]
+        public void FindNexFindNextBiggerNumber_NegativeNumber_ArgumentException()
+        {
+            Assert.Throws<ArgumentException>(() => DataManipulator.FindNextBiggerNumber(-7));
+        }
+
 
     }
 

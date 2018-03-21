@@ -46,6 +46,9 @@ namespace NET.S._2018.Karakouski._2
         /// <returns></returns>
         public static int FindNextBiggerNumber(int number)
         {
+            if (number < 0)
+                throw new ArgumentException(nameof(number));
+
             char[] digits = number.ToString().ToCharArray();
 
             int rightIndex = -1;
@@ -83,100 +86,12 @@ namespace NET.S._2018.Karakouski._2
 
             Array.Sort(digits, leftIndex + 1, digits.Length - (leftIndex + 1));
 
-            return Int32.Parse(new string(digits));
+            return Int32.Parse(new string(digits));///possible to throw OverflowException - should I adrres that and how if so?..
 
         }
 
         /// <summary>
-        /// Filters a sequence of input number in the way that it contatins only numbers with given digits using String.Contains and ArrayLists
-        /// </summary>
-        /// <param name="listInts"></param>
-        /// <param name="number"></param>
-        /// <returns></returns>
-        public static ArrayList FilterDigit3(int[] listInts, int number)
-        {
-            if (listInts.Length == 0)
-            {
-                throw new ArgumentException();
-            }
-            ArrayList listFilter = new ArrayList();
-            for (int i = 0; i < listInts.Length; i++)
-            {
-                string supportString = listInts[i].ToString();
-                string numberString = number.ToString();
-                if (supportString.Contains(numberString))
-                {
-                    listFilter.Add(listInts[i]);
-                }
-            }
-            return listFilter;
-        }
-
-        /// <summary>
-        /// Filters a sequence of input number in the way that it contatins only numbers with given digits using String.Contains and Arrays
-        /// </summary>
-        /// <param name="numbers"></param>
-        /// <param name="digit"></param>
-        /// <returns></returns>
-        public static int[] FilterDigit2(int[] numbers, int digit)
-        {
-            if ((digit < 0) || (digit > 9))
-                throw new ArgumentException($"{nameof(digit)} must be from 0 to 9", nameof(digit));
-
-            if (numbers == null)
-                throw new ArgumentException(nameof(numbers));
-
-            if (numbers.Length == 0)
-                return null;
-
-            int[] result = new int[0];
-            string digitStr = digit.ToString();
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                string number = numbers[i].ToString();
-                if (number.Contains(digitStr))
-                {
-                    Array.Resize(ref result, result.Length + 1);
-                    result[result.Length - 1] = numbers[i];
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Filters a sequence of input number in the way that it contatins only numbers with given digits using String.Contains and Lists
-        /// </summary>
-        /// <param name="numbers"></param>
-        /// <param name="digit"></param>
-        /// <returns></returns>
-        public static int[] FilterDigit1(int[] numbers, int digit)
-        {
-            if ((digit < 0) || (digit > 9))
-                throw new ArgumentException($"{nameof(digit)} must be from 0 to 9", nameof(digit));
-
-            if (numbers == null)
-                throw new ArgumentException(nameof(numbers));
-
-            if (numbers.Length == 0)
-                return null;
-
-            List<int> result = new List<int>();
-            string digitStr = digit.ToString();
-            for (int i = 0; i < numbers.Length; i++)
-            {
-                string number = numbers[i].ToString();
-                if (number.Contains(digitStr))
-                {
-                    result.Add(numbers[i]);
-                }
-            }
-
-            return result.ToArray();
-        }
-
-        /// <summary>
-        /// Filters a sequence of input number in the way that it contatins only numbers with given digits using devision
+        /// Filters a sequence by input number
         /// </summary>
         /// <param name="numbers"></param>
         /// <param name="digit"></param>
