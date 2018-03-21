@@ -40,41 +40,51 @@ namespace NET.S._2018.Karakouski._2
         }
 
         /// <summary>
-        /// Finds, if any, the next bigger number consisting of the same digits as given
+        /// Finds, if any, the next bigger number consisting of the same digits as given. If no number found -1 is reurned
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        public static int? FindNextBiggerNumber(int number)
+        public static int FindNextBiggerNumber(int number)
         {
-            string stringNumber = number.ToString();
-            char? firstSmallerDigit = null;
-            int firstSmallerDigitPosition = -1;
+            char[] digits = number.ToString().ToCharArray();
 
-            for(int i= stringNumber.Length-1; i>0; i--)
+            int rightIndex = -1;
+            int leftIndex = -1;
+
+            // Find the indices of the digits to be swapped.
+            for (int i = digits.Length - 1; i > 0; i--)
             {
-                if (stringNumber[i-1] < stringNumber[i])
+                for (int j = i - 1; j >= 0; j--)
                 {
-                    firstSmallerDigit = stringNumber[i];
-                    firstSmallerDigitPosition = i;
+                    if (digits[i] > digits[j])
+                    {
+
+                        if (rightIndex == -1)
+                        {
+                            rightIndex = i;
+                            leftIndex = j;
+                        }
+                        else if (leftIndex < j && rightIndex > i)
+                        {
+                            rightIndex = i;
+                            leftIndex = j;
+                        }
+                        break;
+                    }
                 }
             }
 
-            if (firstSmallerDigit == null)
-                return null;
+            if (rightIndex == -1)
+                return -1;
 
-            int smallestToTheRighOfFoundPosition = firstSmallerDigitPosition + 1;
-            char smallestToTheRighOfFound = stringNumber[smallestToTheRighOfFoundPosition];
+            char temp = digits[rightIndex];
+            digits[rightIndex] = digits[leftIndex];
+            digits[leftIndex] = temp;
 
-            for (int i = firstSmallerDigitPosition + 2; i < stringNumber.Length; i++)
-            {
-                if (stringNumber[i] > firstSmallerDigit && stringNumber[i] < smallestToTheRighOfFound)
-                {
-                    smallestToTheRighOfFound = stringNumber[i];
-                    smallestToTheRighOfFoundPosition = i;
-                }
-            }
+            Array.Sort(digits, leftIndex + 1, digits.Length - (leftIndex + 1));
 
-            return null;
+            return Int32.Parse(new string(digits));
+
         }
 
         /// <summary>
